@@ -17,7 +17,7 @@ public class Main {
             result.forEach((k, v) -> System.out.println(k + ": " + v));
 
         } catch (IOException e) {
-            System.out.println("File not found.");
+            System.out.println("File not found, please check filepath.");
             e.printStackTrace();
         }
     }
