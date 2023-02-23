@@ -15,7 +15,8 @@ public class WordCounter {
      */
     public static Map<String, Integer> getWordCounts(String text) {
         var words = WordCounter.words(text);
-        return WordCounter.wordCounts(words);
+        var wordCounts = WordCounter.wordCounts(words);
+        return WordCounter.sortWordCounts(wordCounts);
     }
 
     /**
@@ -32,7 +33,7 @@ public class WordCounter {
         }
 
     /**
-     * Takes an array of String and returns and returns a map.
+     * Takes an array of String and returns a map of strings and integers.
      * the Key of the map is each unique word and the value is the count.
      * @param words The array of words.
      * @return map with key as the word and value as the count.
@@ -44,13 +45,23 @@ public class WordCounter {
                                 Function.identity(),
                                 collectingAndThen(Collectors.counting(), Long::intValue)
                         )
-                )
+                );
+    }
+
+    /**
+     * Takes a map of strings and their counts and returns the map sorted in descended order.
+     *
+     * @param wordCounts map of strings to counts.
+     * @return sorted map of strings and counts.
+     */
+    private static Map<String, Integer> sortWordCounts(Map<String, Integer> wordCounts) {
+        return wordCounts
                 .entrySet().stream()
                 .sorted(
                         Map.Entry.<String, Integer>comparingByValue()
                                 .reversed()
                                 .thenComparing(
-                                    Map.Entry.comparingByKey()
+                                        Map.Entry.comparingByKey()
                                 ))
                 .collect(
                         Collectors.toMap(
@@ -59,5 +70,6 @@ public class WordCounter {
                                 (e1, e2) -> e1,
                                 LinkedHashMap::new)
                 );
+
     }
 }
